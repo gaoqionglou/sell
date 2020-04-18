@@ -37,7 +37,7 @@
                   <span class="old" v-show="food.oldPrice!=''">${{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol @add="addFood" :food="food"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -45,7 +45,12 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart
+      ref="shopcart"
+      :select-foods="selectFoods"
+      :delivery-price="seller.deliveryPrice"
+      :min-price="seller.minPrice"
+    ></shopcart>
   </div>
 </template>
 
@@ -53,10 +58,10 @@
 /* eslint-disable */
 import BScroll from "better-scroll";
 import shopcart from "../shopcart/shopcart";
-import cartcontrol from "../cartcontrol/cartcontrol"
+import cartcontrol from "../cartcontrol/cartcontrol";
 const ERR_OK = 0;
 export default {
-  components: { shopcart,cartcontrol },
+  components: { shopcart, cartcontrol },
   props: {
     seller: {
       type: Object
@@ -82,15 +87,15 @@ export default {
       return 0;
     },
     selectFoods() {
-      let foods = []
-      this.goods.forEach((good)=>{
-        good.foods.forEach((foodItem)=>{
-          if(foodItem.count){
-            foods.push(foodItem)
+      let foods = [];
+      this.goods.forEach(good => {
+        good.foods.forEach(foodItem => {
+          if (foodItem.count) {
+            foods.push(foodItem);
           }
-        })
-      })
-      return foods
+        });
+      });
+      return foods;
     }
   },
   created() {
@@ -145,6 +150,15 @@ export default {
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el);
       console.log("点击" + index);
+    },
+    addFood(target) {
+      this._drop(target);
+    },
+    _drop(target) {
+      // 体验优化,异步执行下落动画
+      this.$nextTick(() => {
+        this.$refs.shopcart.drop(target);
+      });
     }
   }
 };
@@ -304,11 +318,12 @@ export default {
             color: rgb(147, 153, 159);
           }
         }
+
         .cartcontrol-wrapper {
-          position absolute
-          right:0
-          bottom:12px
-          }
+          position: absolute;
+          right: 0;
+          bottom: 12px;
+        }
       }
     }
   }
