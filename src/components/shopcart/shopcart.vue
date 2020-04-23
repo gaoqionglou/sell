@@ -44,7 +44,7 @@
                   <span>${{food.price*food.count}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol @add="addFood" :food="food"></cartcontrol>
                 </div>
               </li>
             </ul>
@@ -148,6 +148,9 @@ export default {
     }
   },
   methods: {
+    addFood(target) {
+      this.drop(target);
+    },
     drop(el) {
       console.log(el);
       for (let i = 0; i < this.balls.length; i++) {
@@ -207,12 +210,14 @@ export default {
         food.count = 0;
       });
     },
-    hideList() {this.fold = true;},
-    pay(){
-      if(this.totalPrice<this.minPrice){
-        return
+    hideList() {
+      this.fold = true;
+    },
+    pay() {
+      if (this.totalPrice < this.minPrice) {
+        return;
       }
-      window.alert(`支付${this.totalPrice}`)
+      window.alert(`支付${this.totalPrice}`);
     }
   }
 };
