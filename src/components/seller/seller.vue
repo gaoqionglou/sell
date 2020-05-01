@@ -44,6 +44,17 @@
         </ul>
       </div>
       <split></split>
+      <div class="pics">
+        <h1 class="title">商家实景</h1>
+        <div class="pic-wrapper" ref="picWrapper">
+          <!-- 因为子布局的宽度要大于父布局的宽度 bscroll才会生效 所以设置了一个wrapper包含ul 然后通过_initPics动态设置子布局宽度-->
+          <ul class="pic-list" ref="picList">
+            <li class="pic-item" v-for="(pic,index) in seller.pics" :key="index">
+              <img :src="pic" width="120" height="90" />
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -77,6 +88,24 @@ export default {
       } else {
         this.scroll.refresh();
       }
+    },
+    _initPics() {
+      if (this.seller.pics) {
+        let picWidth = 120;
+        let margin = 6;
+        let width = (picWidth + margin) * this.seller.pics.length;
+        this.$refs.picList.style.width = width + "px";
+        this.$nextTick(() => {
+          if (!this.picScroll) {
+            this.picScroll = new BScroll(this.$refs.picWrapper, {
+              scrollX: true,
+              eventPassthrough: "vertical"
+            });
+          } else {
+            this.picScroll.refresh();
+          }
+        });
+      }
     }
   },
   created() {
@@ -87,7 +116,7 @@ export default {
       console.log(111);
       this.$nextTick(() => {
         this._initScroll();
-        //this._initPics();
+        this._initPics();
       });
     }
   },
@@ -95,7 +124,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this._initScroll();
-      //this._initPics();
+      this._initPics();
     });
   }
 };
@@ -174,77 +203,109 @@ export default {
         }
       }
     }
-
-
   }
-      .bulletin {
-      padding: 18px 18px 0 18px;
 
-      .title {
-        margin-bottom: 8px;
-        line-height: 14px;
-        color: rgb(7, 17, 27);
-        font-size: 14px;
+  .bulletin {
+    padding: 18px 18px 0 18px;
+
+    .title {
+      margin-bottom: 8px;
+      line-height: 14px;
+      color: rgb(7, 17, 27);
+      font-size: 14px;
+    }
+
+    .content-wrapper {
+      padding: 0 12px 16px 12px;
+      border-1px(rgba(7, 17, 27, 0.1));
+
+      .content {
+        line-height: 24px;
+        font-size: 12px;
+        color: rgb(240, 20, 20);
       }
+    }
 
-      .content-wrapper {
-        padding: 0 12px 16px 12px;
+    .supports {
+      .support-item {
+        padding: 16px 12px;
         border-1px(rgba(7, 17, 27, 0.1));
+        font-size: 0;
 
-        .content {
-          line-height: 24px;
+        &:last-child {
+          border-none();
+        }
+
+        .icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          vertical-align: top;
+          margin-right: 6px;
+          background-size: 16px 16px;
+          background-repeat: no-repeat;
+
+          &.decrease {
+            bg-image('decrease_4');
+          }
+
+          &.discount {
+            bg-image('discount_4');
+          }
+
+          &.guarantee {
+            bg-image('guarantee_4');
+          }
+
+          &.invoice {
+            bg-image('invoice_4');
+          }
+
+          &.special {
+            bg-image('special_4');
+          }
+        }
+
+        .text {
+          line-height: 16px;
           font-size: 12px;
-          color: rgb(240, 20, 20);
+          color: rgb(7, 17, 27);
         }
       }
+    }
+  }
 
-      .supports {
-        .support-item {
-          padding: 16px 12px;
-          border-1px(rgba(7, 17, 27, 0.1));
-          font-size: 0;
+  .pics {
+    padding: 18px;
+
+    .title {
+      margin-bottom: 12px;
+      line-height: 14px;
+      color: rgb(7, 17, 27);
+      font-size: 14px;
+    }
+
+    .pic-wrapper {
+      width: 100%;
+      overflow: hidden;
+      // 长度超过屏幕的不会被折行
+      white-space: nowrap;
+
+      .pic-list {
+        font-size: 0;
+
+        .pic-item {
+          display: inline-block;
+          margin-right: 6px;
+          width: 120px;
+          height: 90px;
 
           &:last-child {
-            border-none();
-          }
-
-          .icon {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            vertical-align: top;
-            margin-right: 6px;
-            background-size: 16px 16px;
-            background-repeat: no-repeat;
-
-            &.decrease {
-              bg-image('decrease_4');
-            }
-
-            &.discount {
-              bg-image('discount_4');
-            }
-
-            &.guarantee {
-              bg-image('guarantee_4');
-            }
-
-            &.invoice {
-              bg-image('invoice_4');
-            }
-
-            &.special {
-              bg-image('special_4');
-            }
-          }
-
-          .text {
-            line-height: 16px;
-            font-size: 12px;
-            color: rgb(7, 17, 27);
+            margin: 0;
           }
         }
       }
     }
+  }
 }
 </style>
