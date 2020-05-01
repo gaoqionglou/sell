@@ -1,5 +1,5 @@
 <template>
-  <div class="seller">
+  <div class="seller" ref="seller">
     <div class="seller-content">
       <div class="overview">
         <h1 class="title">{{seller.name}}</h1>
@@ -41,6 +41,7 @@
             </li>
           </ul>
         </div>
+        <!-- <split></split> -->
       </div>
     </div>
   </div>
