@@ -28,21 +28,22 @@
             </div>
           </li>
         </ul>
-        <split></split>
-        <div class="bulletin">
-          <h1 class="title">公告与活动</h1>
-          <div class="content-wrapper border-1px">
-            <p class="content">{{seller.bulletin}}</p>
-          </div>
-          <ul v-if="seller.supports" class="supports">
-            <li class="support-item" v-for="(item,index) in seller.supports" :key="index">
-              <span class="icon" :class="classMap[seller.supports[index].type]"></span>
-              <span class="text">{{seller.supports[index].description}}</span>
-            </li>
-          </ul>
-        </div>
         <!-- <split></split> -->
       </div>
+      <split></split>
+      <div class="bulletin">
+        <h1 class="title">公告与活动</h1>
+        <div class="content-wrapper border-1px">
+          <p class="content">{{seller.bulletin}}</p>
+        </div>
+        <ul v-if="seller.supports" class="supports">
+          <li class="support-item border-1px" v-for="(item,index) in seller.supports" :key="index">
+            <span class="icon" :class="classMap[seller.supports[index].type]"></span>
+            <span class="text">{{seller.supports[index].description}}</span>
+          </li>
+        </ul>
+      </div>
+      <split></split>
     </div>
   </div>
 </template>
@@ -82,8 +83,8 @@ export default {
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
   },
   watch: {
-    'seller'() {
-      console.log(111)
+    seller() {
+      console.log(111);
       this.$nextTick(() => {
         this._initScroll();
         //this._initPics();
@@ -174,7 +175,9 @@ export default {
       }
     }
 
-    .bulletin {
+
+  }
+      .bulletin {
       padding: 18px 18px 0 18px;
 
       .title {
@@ -243,6 +246,5 @@ export default {
         }
       }
     }
-  }
 }
 </style>
