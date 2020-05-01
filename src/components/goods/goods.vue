@@ -112,7 +112,7 @@ export default {
       res => {
         if (res.body.errno === ERR_OK) {
           this.goods = res.body.data;
-          console.log(this.goods);
+          // console.log(this.goods);
           this.$nextTick(() => {
             this._initScroll();
             this._calculateHeight();
@@ -157,7 +157,7 @@ export default {
       );
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el);
-      console.log("点击" + index);
+      // console.log("点击" + index);
     },
     addFood(target) {
       this._drop(target);

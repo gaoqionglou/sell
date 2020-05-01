@@ -134,14 +134,14 @@ export default {
     },
     selectRating(type) {
       this.selectType = type;
-      console.log(this.selectType);
+      // console.log(this.selectType);
       this.$nextTick(() => {
         this.scroll.refresh();
       });
     },
     toggleContent(onlyContent) {
       this.onlyContent = !onlyContent;
-      console.log(this.onlyContent);
+      // console.log(this.onlyContent);
       this.$nextTick(() => {
         this.scroll.refresh();
       });

@@ -152,7 +152,7 @@ export default {
       this.drop(target);
     },
     drop(el) {
-      console.log(el);
+      // console.log(el);
       for (let i = 0; i < this.balls.length; i++) {
         let ball = this.balls[i];
         if (!ball.show) {

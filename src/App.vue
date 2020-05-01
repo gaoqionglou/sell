@@ -33,7 +33,6 @@ export default {
       res => {
         if (res.body.errno === ERR_OK) {
           this.seller = res.body.data;
-          console.log(this.seller);
         }
       },
       err => {
