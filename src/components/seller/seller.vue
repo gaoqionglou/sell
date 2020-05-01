@@ -28,7 +28,10 @@
             </div>
           </li>
         </ul>
-        <!-- <split></split> -->
+        <div class="favorite">
+          <span class="icon-favorite" :class="{'active':favorite}" @click="toggleFavorite"></span>
+          <span class="text">{{favoriteText}}</span>
+        </div>
       </div>
       <split></split>
       <div class="bulletin">
@@ -55,6 +58,13 @@
           </ul>
         </div>
       </div>
+      <split></split>
+      <div class="info">
+        <h1 class="title border-1px">商家信息</h1>
+        <ul>
+          <li class="info-item" v-for="(info,index) in seller.infos" :key="index">{{info}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -64,6 +74,7 @@
 import star from "../../components/star/star";
 import split from "../split/split";
 import BScroll from "better-scroll";
+import { saveToLocal, loadFromLocal } from "../../common/js/store";
 export default {
   components: { star, split },
   props: {
@@ -76,7 +87,10 @@ export default {
   },
   data() {
     return {
-      classMap: []
+      classMap: [],
+      favorite: (() => {
+        return loadFromLocal(this.seller.id, "favorite", false);
+      })()
     };
   },
   methods: {
@@ -106,6 +120,19 @@ export default {
           }
         });
       }
+    },
+    toggleFavorite(event) {
+      if (!event._constructed) {
+        //better-scroll为true,原生浏览器为false，防止在pc上响应2次点击事件
+        return;
+      }
+      this.favorite = !this.favorite;
+      saveToLocal(this.seller.id, "favorite", this.favorite);
+    }
+  },
+  computed: {
+    favoriteText() {
+      return this.favorite ? "已收藏" : "收藏";
     }
   },
   created() {
@@ -113,7 +140,6 @@ export default {
   },
   watch: {
     seller() {
-      console.log(111);
       this.$nextTick(() => {
         this._initScroll();
         this._initPics();
@@ -201,6 +227,32 @@ export default {
             font-size: 24px;
           }
         }
+      }
+    }
+
+    .favorite {
+      position: absolute;
+      width: 50px;
+      right: 11px;
+      top: 18px;
+      text-align: center;
+
+      .icon-favorite {
+        display: block;
+        margin-bottom: 4px;
+        line-height: 24px;
+        font-size: 24px;
+        color: #d4d6d9;
+
+        &.active {
+          color: rgb(240, 20, 20);
+        }
+      }
+
+      .text {
+        line-height: 10px;
+        font-size: 10px;
+        color: rgb(77, 85, 93);
       }
     }
   }
@@ -304,6 +356,29 @@ export default {
             margin: 0;
           }
         }
+      }
+    }
+  }
+
+  .info {
+    padding: 18px 18px 0 18px;
+    color: rgb(7, 17, 27);
+
+    .title {
+      padding-bottom: 12px;
+      line-height: 14px;
+      border-1px(rgba(7, 17, 27, 0.1));
+      font-size: 14px;
+    }
+
+    .info-item {
+      padding: 16px 12px;
+      line-height: 16px;
+      border-1px(rgba(7, 17, 27, 0.1));
+      font-size: 12px;
+
+      &:last-child {
+        border-none();
       }
     }
   }
